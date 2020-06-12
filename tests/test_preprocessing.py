@@ -1,6 +1,6 @@
 import pytest
 from collections import Counter
-from utils.preprocessing import lazy_token_counter
+from ai_tools.utils.preprocessing import lazy_token_counter
 
 def test_lazy_token_counter_type():
     var = ['wewef fweff ewf' for i in range(10)]

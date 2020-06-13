@@ -24,7 +24,7 @@ def build_dssm(emb_mat, bias_initializer):
 
     x = Concatenate()[q,a]
     x = Dense(128, activation='relu')(x)
-    out = Dense(1, activation='softmax', name='prediction', bias_initializer=bias_initializer)(x)
+    out = Dense(1, activation='sigmoid', name='prediction', bias_initializer=bias_initializer)(x)
     return Model(inputs=(question, answer), outputs=out)
 
 

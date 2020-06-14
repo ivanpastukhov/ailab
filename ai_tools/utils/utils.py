@@ -1,4 +1,8 @@
 from matplotlib.ticker import FormatStrFormatter
+from sklearn.metrics import average_precision_score, precision_recall_curve, roc_curve
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def draw_prc_roc(y_test, y_score, recall_threshold, fpr_threshold):
     average_precision = average_precision_score(y_test, y_score)

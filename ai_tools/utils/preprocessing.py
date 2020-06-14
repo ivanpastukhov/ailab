@@ -27,7 +27,7 @@ def text_normalizer(string, morpher):
 
 def embedding_matrix(token2id, ft_model_path, emb_size=100, show_progress=True):
     if min(token2id.values()) != 1:
-        raise AttributeError('IDs of tokenizer must be not less than 1, because "0" is reserved for padding.')
+        raise ValueError('IDs of tokenizer must be not less than 1, because "0" is reserved for padding.')
     ##TODO: show_progress==False
     if not show_progress:
         raise NotImplementedError()

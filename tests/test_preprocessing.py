@@ -17,7 +17,7 @@ def test_lazy_token_counter():
 
 def test_embedding_matrix_token2id_check():
     token2id = {'abc': 0, 'bcd': 1, 'cde': 2}
-    with pytest.raises(AttributeError) as err:
+    with pytest.raises(ValueError) as err:
         embedding_matrix(token2id, './',)
     assert err.match('IDs of tokenizer must be not less than 1, because "0" is reserved for padding.')
     return

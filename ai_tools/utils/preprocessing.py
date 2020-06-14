@@ -1,5 +1,6 @@
 from functools import lru_cache
 from collections import Counter
+from itertools import groupby
 import re
 import types
 import numpy as np
@@ -37,3 +38,10 @@ def embedding_matrix(token2id, ft_model_path, emb_size=100, show_progress=True):
         emb_mat[idx] = model.get_word_vector(token)
     return emb_mat
 
+def preprocess(s):
+      if not isinstance(s, str):
+        raise ValueError('Object of type "str" is expected.')
+      s = s.lower()
+      pattern = r'[a-zа-я0-9]+|[\(\)]+'
+      s = (token for token, _ in groupby(re.findall(pattern, s)))
+      return ' '.join(s)

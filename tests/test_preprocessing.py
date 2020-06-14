@@ -1,6 +1,6 @@
 import pytest
 from collections import Counter
-from ai_tools.utils.preprocessing import lazy_token_counter, embedding_matrix
+from ai_tools.utils.preprocessing import lazy_token_counter, embedding_matrix, preprocess
 
 def test_lazy_token_counter_type():
     var = ['wewef fweff ewf' for i in range(10)]
@@ -20,5 +20,12 @@ def test_embedding_matrix_token2id_check():
     with pytest.raises(ValueError) as err:
         embedding_matrix(token2id, './',)
     assert err.match('IDs of tokenizer must be not less than 1, because "0" is reserved for padding.')
+    return
+
+def test_preprocess():
+    s = 'привет))) кек)) ло(( л как дела?я абрикос НаЮге Рос heLlo 666 2342 ))) ))) 55 55 5 00!!00'
+    res = preprocess(s)
+    expected = 'привет ))) кек )) ло (( л как дела я абрикос наюге рос hello 666 2342 ))) 55 5 00'
+    assert res == expected
     return
 

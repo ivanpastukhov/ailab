@@ -55,10 +55,6 @@ def positive_sampler(questions, answers):
 def negative_sampler(question, questions, answers, max_tries=10000):
     ## Будем генерировать случайные айдишники, если question == questions[случайный_айдишник], то семплируем пока это условие не
     # примет значение False.
-    if len(questions) != len(answers):
-        raise ValueError('Length of array of questons must be equal to length of array of answers.')
-    if len(np.unique(questions)) < 2:
-        raise ValueError('At least 2 unique questions must be passed for negative sampling.')
     while True:
         random_answer_id = np.random.randint(0, len(answers))
         ## если случайно вытянули айдишник того-же самого вопроса, пробуем ещё раз, пока случайный айдишник не будет относиться к
@@ -74,6 +70,10 @@ def negative_sampler(question, questions, answers, max_tries=10000):
 
 
 def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
+    if len(questions) != len(answers):
+        raise ValueError('Length of array of questons must be equal to length of array of answers.')
+    if len(np.unique(questions)) < 2:
+        raise ValueError('At least 2 unique questions must be passed for negative sampling.')
     np.random.seed(random_seed)
     ## pos_frac = 0.3 -> 3/10 -> 1/3.(3) -> ~ 1/3 => на 3 семпла будет 1 позитивная и
     # 2 негативных пары
@@ -85,3 +85,4 @@ def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
         yield next(positives)
         for _ in range(nnegatives):
             yield next(negatives)
+

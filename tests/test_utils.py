@@ -29,14 +29,6 @@ def test_positive_sampler_multiple_questions():
     assert res == expected
     return
 
-def test_negative_sampler_single_question():
-    question, questions, answers = 'a', ['a', 'a', 'a'], ['aa', 'ab', 'ac']
-    with pytest.raises(ValueError) as err:
-        res = negative_sampler(question, questions, answers)
-        next(res)
-    assert err.match('At least 2 unique questions must be passed for negative sampling.')
-    return
-
 def test_negative_sampler_unbalanced():
     question, questions, answers = 'foo', ['foo']*int(1e6) + ['bar'], ['baz' for _ in range(int(1e6)+1)]
     max_tries = 3
@@ -98,6 +90,14 @@ def test_sampler_npositives():
     pos_frac = 0.234
     res = sampler(questions, answers, pos_frac, 432, 100)
     assert np.sum([label for _, _, label in res]) == n_answers
+    return
+
+def test_sampler_single_question():
+    question, questions, answers = 'a', ['a', 'a', 'a'], ['aa', 'ab', 'ac']
+    with pytest.raises(ValueError) as err:
+        res = sampler(questions, answers, pos_frac=0.2, random_seed=432)
+        next(res)
+    assert err.match('At least 2 unique questions must be passed for negative sampling.')
     return
 
 

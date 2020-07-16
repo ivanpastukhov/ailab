@@ -55,18 +55,27 @@ def positive_sampler(questions, answers):
 def negative_sampler(question, questions, answers, max_tries=10000):
     ## Будем генерировать случайные айдишники, если question == questions[случайный_айдишник], то семплируем пока это условие не
     # примет значение False.
+    random_ids = iter(np.random.randint(0, len(questions), 1000000))
+    counter = 0
     while True:
-        random_answer_id = np.random.randint(0, len(answers))
+        try:
+            rand_id = next(random_ids)
+        except StopIteration:
+            random_ids = iter(np.random.randint(0, len(questions), 1000000))
+            rand_id = next(random_ids)
         ## если случайно вытянули айдишник того-же самого вопроса, пробуем ещё раз, пока случайный айдишник не будет относиться к
         # другому вопросу.
-        counter = 0
-        while question == questions[random_answer_id]:
-            random_answer_id = np.random.randint(0, len(answers))
+        random_question, random_answer = questions[rand_id], answers[rand_id]
+        if question != random_question:
+            yield question, random_answer, 0
+            counter = 0
+        else:
             counter += 1
             if counter >= max_tries:
                 raise ValueError(
-                    'Could not sample negative example after {} tries. More unique questions must be added'.format(counter))
-        yield question, answers[random_answer_id], 0
+                    'Could not sample negative example after {} tries. More unique questions must be added'.format(
+                        counter))
+            continue
 
 
 def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):

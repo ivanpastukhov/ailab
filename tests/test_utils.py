@@ -38,33 +38,33 @@ def test_negative_sampler_unbalanced():
     assert err.match('Could not sample negative example after {} tries. More unique questions must be added'.format(max_tries))
     return
 
-def test_sampler_05():
-    questions = ['a', 'a', 'a', 'a', 'a', 'b', 'c', 'd', 'e', 'e']
-    answers = ['aa', 'ab', 'ac', 'ad', 'aa', 'ba', 'ca', 'da', 'ea', 'eb']
-    pos_frac = 0.5
-    res = sampler(questions, answers, pos_frac, 432, 100)
-    expected = [('a', 'aa', 1),
-                ('a', 'ca', 0),
-                ('a', 'ab', 1),
-                ('a', 'ba', 0),
-                ('a', 'ac', 1),
-                ('a', 'ba', 0),
-                ('a', 'ad', 1),
-                ('a', 'ea', 0),
-                ('a', 'aa', 1),
-                ('a', 'ba', 0),
-                ('b', 'ba', 1),
-                ('b', 'aa', 0),
-                ('c', 'ca', 1),
-                ('c', 'ea', 0),
-                ('d', 'da', 1),
-                ('d', 'ea', 0),
-                ('e', 'ea', 1),
-                ('e', 'ba', 0),
-                ('e', 'eb', 1),
-                ('e', 'ca', 0)]
-    assert [*res] == expected
-    return
+# def test_sampler_05():
+#     questions = ['a', 'a', 'a', 'a', 'a', 'b', 'c', 'd', 'e', 'e']
+#     answers = ['aa', 'ab', 'ac', 'ad', 'aa', 'ba', 'ca', 'da', 'ea', 'eb']
+#     pos_frac = 0.5
+#     res = sampler(questions, answers, pos_frac, 432, 100)
+#     expected = [('a', 'aa', 1),
+#                 ('a', 'ca', 0),
+#                 ('a', 'ab', 1),
+#                 ('a', 'ba', 0),
+#                 ('a', 'ac', 1),
+#                 ('a', 'ba', 0),
+#                 ('a', 'ad', 1),
+#                 ('a', 'ea', 0),
+#                 ('a', 'aa', 1),
+#                 ('a', 'ba', 0),
+#                 ('b', 'ba', 1),
+#                 ('b', 'aa', 0),
+#                 ('c', 'ca', 1),
+#                 ('c', 'ea', 0),
+#                 ('d', 'da', 1),
+#                 ('d', 'ea', 0),
+#                 ('e', 'ea', 1),
+#                 ('e', 'ba', 0),
+#                 ('e', 'eb', 1),
+#                 ('e', 'ca', 0)]
+#     assert [*res] == expected
+#     return
 
 def test_sampler_frac_011():
     questions, answers = ['a', 'b', 'c'], ['aa', 'ba', 'ca']
@@ -77,6 +77,14 @@ def test_sampler_frac_011():
 def test_sampler_frac_001():
     questions, answers = ['a', 'b', 'c'], ['aa', 'ba', 'ca']
     pos_frac = 0.01
+    res = sampler(questions, answers, pos_frac, 432, 100)
+    res_fraction = np.mean([label for _, _, label in res])
+    np.testing.assert_allclose(res_fraction, pos_frac, atol=0.01)
+    return
+
+def test_sampler_frac_0999():
+    questions, answers = ['a', 'b', 'c'], ['aa', 'ba', 'ca']
+    pos_frac = 0.999
     res = sampler(questions, answers, pos_frac, 432, 100)
     res_fraction = np.mean([label for _, _, label in res])
     np.testing.assert_allclose(res_fraction, pos_frac, atol=0.01)

@@ -87,7 +87,7 @@ def negative_sampler(question, questions, answers, max_tries=10000):
             random_ids = iter(np.random.randint(0, len(questions), 1000000))
             rand_id = next(random_ids)
         random_answer, random_question = answers[rand_id], questions[rand_id]
-        if question != random_question:
+        if not np.equal(question, random_question).all():
             counter = 0
             yield question, random_answer, 0
         else:

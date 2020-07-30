@@ -98,10 +98,12 @@ def negative_sampler(question, questions, answers, max_tries=10000):
 
 
 def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
+    ##TODO: исправить тесты после закомменчивания проверок. Комментим, потому что раньше принимали стринги
+    # а сейчас массивы с индексами. Теперь не нужно каждый раз тратить время на энкодинг
     if len(questions) != len(answers):
         raise ValueError('Length of array of questons must be equal to length of array of answers.')
-    if len(np.unique(questions)) < 2:
-        raise ValueError('At least 2 unique questions must be passed for negative sampling.')
+    # if len(np.unique(questions)) < 2:
+    #     raise ValueError('At least 2 unique questions must be passed for negative sampling.')
     np.random.seed(random_seed)
     ## pos_frac = 0.3 -> 3/10 -> 1/3.(3) -> ~ 1/3 => на 3 семпла будет 1 позитивная и
     # 2 негативных пары

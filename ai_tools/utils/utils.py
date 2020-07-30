@@ -3,6 +3,7 @@ from sklearn.metrics import average_precision_score, precision_recall_curve, roc
 import matplotlib.pyplot as plt
 import numpy as np
 import fractions
+import itertools
 
 
 def draw_prc_roc(y_test, y_score, recall_threshold, fpr_threshold):
@@ -110,7 +111,7 @@ def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
     pos_frac = fractions.Fraction(pos_frac).limit_denominator()
     nnegatives = round(pos_frac.denominator / pos_frac.numerator) - 1
     positives = positive_sampler(questions, answers)
-    for question in questions:
+    for question in itertools.cycle(questions):
         negatives = negative_sampler(question, questions, answers, max_tries)
         yield next(positives)
         for _ in range(nnegatives):

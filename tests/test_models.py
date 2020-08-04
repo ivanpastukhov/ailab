@@ -11,7 +11,7 @@ def vectorizer(s):
         'd': np.array([1.2, 2.2, -4.3, -1.1]),
         'e': np.array([1.,1.,1.,1.,])
         }
-    return np.array([d[i] for i in s])
+    return np.array([d[i] for i in s.split()])
 
 class TestBoWVectorizer:
     def test_vectorize_default(self):

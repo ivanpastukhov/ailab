@@ -21,7 +21,6 @@ class BoWVectorizer(BaseVectorizer):
         return
 
     def _vectorize(self, s, aggs=None):
-        s = s.split()
         vecs = self.vectorizer(s)
         res = np.mean(vecs, axis=0)
         if aggs is None:

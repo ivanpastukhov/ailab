@@ -19,7 +19,7 @@ class TestBoWVectorizer:
         self.bow_vectorizer = BoWVectorizer(vectorizer)
         res = self.bow_vectorizer.vectorize(self.s)
         expected = np.array([0.380, 0.620, -0.340, 0.320])
-        np.testing.assert_almost_equal(res, expected, 1e-6)
+        np.testing.assert_array_almost_equal(res, expected, 6)
         return
 
     def test_vectorize_aggs(self):
@@ -32,7 +32,7 @@ class TestBoWVectorizer:
             [1.2, 2.2, 1.3, 1.2],
             [1.9, 3.1, -1.7, 1.6]
         ))
-        np.testing.assert_almost_equal(res, expected, 1e-6)
+        np.testing.assert_array_almost_equal(res, expected, 6)
         return
 
 

@@ -78,14 +78,14 @@ def positive_sampler(questions, answers):
 #                         counter))
 #             continue
 # новая версия
-def negative_sampler(question, questions, answers, max_tries=10000):
-    random_ids = iter(np.random.randint(0, len(questions), 1000000))
+def negative_sampler(question, questions, answers, max_tries=10000, n_rand_samp=1000000):
+    random_ids = iter(np.random.randint(0, len(questions), n_rand_samp))
     counter = 0
     while True:
         try:
             rand_id = next(random_ids)
         except StopIteration:
-            random_ids = iter(np.random.randint(0, len(questions), 1000000))
+            random_ids = iter(np.random.randint(0, len(questions), n_rand_samp))
             rand_id = next(random_ids)
         random_answer, random_question = answers[rand_id], questions[rand_id]
         if tuple(question) != tuple(random_question):
@@ -99,12 +99,12 @@ def negative_sampler(question, questions, answers, max_tries=10000):
 
 
 def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
+    if pos_frac > 0.5:
+        raise NotImplementedError('Only < 0.5 pos_frac values can be used currently.')
     ##TODO: исправить тесты после закомменчивания проверок. Комментим, потому что раньше принимали стринги
     # а сейчас массивы с индексами. Теперь не нужно каждый раз тратить время на энкодинг
     if len(questions) != len(answers):
         raise ValueError('Length of array of questons must be equal to length of array of answers.')
-    # if len(np.unique(questions)) < 2:
-    #     raise ValueError('At least 2 unique questions must be passed for negative sampling.')
     np.random.seed(random_seed)
     ## pos_frac = 0.3 -> 3/10 -> 1/3.(3) -> ~ 1/3 => на 3 семпла будет 1 позитивная и
     # 2 негативных пары

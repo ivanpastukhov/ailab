@@ -118,6 +118,7 @@ def sampler(questions, answers, pos_frac, random_seed, max_tries=10000):
 
 def draw_prc_roc(y_test, y_score, recall_threshold, fpr_threshold):
     from matplotlib.ticker import FormatStrFormatter
+    from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve
     average_precision = average_precision_score(y_test, y_score)
     precision, recall, _ = precision_recall_curve(y_test, y_score)
     fpr, tpr, thr = roc_curve(y_test, y_score, )
@@ -155,3 +156,9 @@ def draw_prc_roc(y_test, y_score, recall_threshold, fpr_threshold):
     ax[1].legend(loc="lower right")
 
     plt.show()
+    print('Class balance (pos/neg): ', round(np.mean(y_test), 3), ' / ', round(1 - np.mean(y_test), 3))
+    print('precision(recall = {}) = '.format(recall_threshold),
+          round(float(precision[::-1][np.searchsorted(recall[::-1], recall_threshold)]), 3))
+    print('TPR on FPR({}) = '.format(fpr_threshold), round(tpr[(np.abs(fpr - fpr_threshold)).argmin()], 3))
+    print('ROC-AUC: ', roc_auc_score(y_test, y_score))
+    return fpr, tpr, thr

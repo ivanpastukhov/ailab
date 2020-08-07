@@ -162,3 +162,15 @@ def draw_prc_roc(y_test, y_score, recall_threshold, fpr_threshold):
     print('TPR on FPR({}) = '.format(fpr_threshold), round(tpr[(np.abs(fpr - fpr_threshold)).argmin()], 3))
     print('ROC-AUC: ', roc_auc_score(y_test, y_score))
     return fpr, tpr, thr
+
+def save_pickle(obj, fpath):
+    import pickle
+    with open(fpath, 'wb') as fout:
+        pickle.dump(obj, fout)
+    return
+
+def load_pickle(fpath):
+    import pickle
+    with open(fpath, 'rb') as fin:
+        res = pickle.load(fin)
+    return res
